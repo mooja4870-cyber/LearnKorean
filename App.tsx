@@ -1,20 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// Antigravity — Main App Entry Point
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar } from 'react-native';
+import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
+import { RootNavigator } from './src/navigation/RootNavigator';
+import './src/i18n';
+
+const AppContent = () => {
+  const { mode } = useTheme();
+
+  return (
+    <NavigationContainer>
+      <StatusBar
+        barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+        translucent
+      />
+      <RootNavigator />
+    </NavigationContainer>
+  );
+};
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

@@ -1,0 +1,179 @@
+{
+  "common": {
+    "appName": "Antigravity",
+    "slogan": "Break the gravity of language barriers!",
+    "continue": "Continue",
+    "next": "Next",
+    "back": "Back",
+    "done": "Done",
+    "cancel": "Cancel",
+    "save": "Save",
+    "ok": "OK",
+    "error": "Error",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "comingSoon": "Coming Soon!",
+    "comingSoonDesc": "This feature is coming soon!",
+    "notifyMe": "Notify me when it's ready!",
+    "notified": "You'll be notified! ✅",
+    "guest": "Guest"
+  },
+  "tabs": {
+    "home": "Home",
+    "learn": "Learn",
+    "kzone": "K-Zone",
+    "profile": "Profile"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Antigravity! 🚀",
+    "welcomeDesc": "Your journey to mastering Korean starts here.",
+    "selectLanguage": "What's your native language?",
+    "getStarted": "Get Started",
+    "letsGo": "Let's Go!"
+  },
+  "auth": {
+    "login": "Log In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "orContinueWith": "or continue with",
+    "google": "Continue with Google",
+    "apple": "Continue with Apple",
+    "guestMode": "Try as Guest",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "signUpHere": "Sign up here",
+    "loginHere": "Log in here",
+    "logout": "Log Out",
+    "deleteAccount": "Delete Account"
+  },
+  "home": {
+    "dashboard": "Dashboard",
+    "streak": "Day Streak",
+    "keepGoing": "Keep going!",
+    "todaysMission": "Today's Mission",
+    "dailyQuiz": "Daily Quiz",
+    "dailyQuizDesc": "Hangul Quiz — 5 Questions",
+    "startQuiz": "Start Quiz",
+    "levelProgress": "Level Progress",
+    "level1": "Hangul Master"
+  },
+  "learn": {
+    "learningPath": "Learning Path",
+    "level": "Level",
+    "unit": "Unit",
+    "lesson": "Lesson",
+    "quiz": "Quiz",
+    "vowels": "Vowels",
+    "consonants": "Consonants",
+    "basicVowels": "Basic Vowels",
+    "basicConsonants1": "Basic Consonants 1",
+    "basicConsonants2": "Basic Consonants 2",
+    "vowelQuiz": "Vowel Quiz",
+    "consonantQuiz": "Consonant Quiz",
+    "combining": "Combining",
+    "greetings": "Greetings",
+    "numbers": "Numbers",
+    "words100": "Basic 100 Words",
+    "sentences": "Basic Sentences",
+    "pronunciation": "Pronunciation",
+    "romanization": "Romanization",
+    "example": "Example",
+    "meaning": "Meaning",
+    "practice": "Practice",
+    "locked": "Locked",
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "startLesson": "Start Lesson",
+    "nextChar": "Next",
+    "prevChar": "Previous",
+    "charOf": "of"
+  },
+  "quiz": {
+    "question": "Question",
+    "of": "of",
+    "whatSound": "What sound does this make?",
+    "whichChar": "Which character makes this sound?",
+    "correct": "Correct! 🎉",
+    "incorrect": "Not quite 😅",
+    "score": "Score",
+    "perfect": "Perfect Score! 🌟",
+    "great": "Great Job! 🎉",
+    "good": "Good effort! 👍",
+    "tryAgain": "Keep practicing! 💪",
+    "retake": "Retake Quiz",
+    "finish": "Finish",
+    "results": "Quiz Results"
+  },
+  "kzone": {
+    "title": "K-Zone",
+    "subtitle": "Explore Korean Culture",
+    "kpop": "K-Pop Zone",
+    "kdrama": "K-Drama Zone",
+    "kfood": "K-Food Zone",
+    "kvariety": "K-Variety Zone",
+    "ksns": "K-SNS Zone",
+    "kculture": "Korean Culture"
+  },
+  "profile": {
+    "myProfile": "My Profile",
+    "myStats": "My Stats",
+    "totalStudyDays": "Total Study Days",
+    "currentStreak": "Current Streak",
+    "longestStreak": "Longest Streak",
+    "lessonsCompleted": "Lessons Completed",
+    "quizAccuracy": "Quiz Accuracy",
+    "joinedDate": "Joined",
+    "nativeLanguage": "Native Language",
+    "currentLevel": "Current Level",
+    "editProfile": "Edit Profile"
+  },
+  "settings": {
+    "title": "Settings",
+    "notifications": "Notifications",
+    "learningReminder": "Learning Reminder",
+    "reminderTime": "Reminder Time",
+    "newContentAlert": "New Content Alerts",
+    "appLanguage": "App Language",
+    "sound": "Sound",
+    "soundEffects": "Sound Effects",
+    "autoPlayAudio": "Auto-play Audio",
+    "darkMode": "Dark Mode",
+    "account": "Account",
+    "changeEmail": "Change Email",
+    "changePassword": "Change Password",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contactUs": "Contact Us",
+    "rateApp": "Rate App",
+    "shareApp": "Share App",
+    "appVersion": "App Version",
+    "version": "1.0.0 (MVP)"
+  },
+  "help": {
+    "title": "Help",
+    "faq": "FAQ",
+    "tutorial": "App Tutorial",
+    "contactSupport": "Contact Support",
+    "faqItems": [
+      {
+        "q": "What is Antigravity?",
+        "a": "Antigravity is a Korean learning app designed to help you master Korean through K-Culture content, interactive quizzes, and structured lessons."
+      },
+      {
+        "q": "Is it free?",
+        "a": "The core learning content is free. Premium features will be available in the future."
+      },
+      {
+        "q": "What level is the app for?",
+        "a": "Currently, Antigravity focuses on absolute beginners learning Hangul (the Korean alphabet). More levels coming soon!"
+      },
+      {
+        "q": "How do I reset my progress?",
+        "a": "Go to Settings → Account → you can reset your learning progress from there."
+      }
+    ]
+  }
+}
