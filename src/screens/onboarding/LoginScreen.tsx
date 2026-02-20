@@ -1,5 +1,5 @@
 // Login Screen
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView,
     Platform, ScrollView, StatusBar,
@@ -9,6 +9,7 @@ import { useTheme } from '../../theme/ThemeContext';
 import { spacing, borderRadius } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useGoogleAuth } from '../../services/googleAuth';
 import { useTranslation } from 'react-i18next';
 
 export const LoginScreen = ({ navigation, route }: any) => {
@@ -22,7 +23,23 @@ export const LoginScreen = ({ navigation, route }: any) => {
     // Auth store actions
     const loginWithEmail = useAuthStore(s => s.loginWithEmail);
     const loginAsGuest = useAuthStore(s => s.loginAsGuest);
+    const loginWithGoogle = useAuthStore(s => s.loginWithGoogle);
     const isLoading = useAuthStore(s => s.isLoading);
+
+    // Google auth hook
+    const { response, promptAsync } = useGoogleAuth();
+
+    // Handle Google auth response
+    useEffect(() => {
+        if (response?.type === 'success') {
+            const { id_token } = response.params;
+            if (id_token) {
+                loginWithGoogle(id_token, selectedLanguage).catch((err: any) => {
+                    Alert.alert(t('common.error'), err.message);
+                });
+            }
+        }
+    }, [response]);
 
     const handleEmailAuth = async () => {
         if (!email.trim() || !password.trim()) {
@@ -43,6 +60,14 @@ export const LoginScreen = ({ navigation, route }: any) => {
             await loginAsGuest(selectedLanguage);
         } catch (error: any) {
             Alert.alert(t('common.error'), error.message);
+        }
+    };
+
+    const handleGoogleAuth = async () => {
+        try {
+            await promptAsync();
+        } catch (error: any) {
+            Alert.alert(t('common.error'), 'Google Sign-In failed');
         }
     };
 
@@ -116,7 +141,8 @@ export const LoginScreen = ({ navigation, route }: any) => {
                     <View style={styles.socialButtons}>
                         <TouchableOpacity
                             style={[styles.socialButton, { backgroundColor: '#1A1930', borderColor: '#2D2B4A' }]}
-                            onPress={() => Alert.alert('Google Login', 'Coming soon')}
+                            onPress={handleGoogleAuth}
+                            disabled={isLoading}
                         >
                             <Text style={styles.socialEmoji}>🔵</Text>
                             <Text style={[styles.socialText, { color: '#F1F1F6' }]}>{t('auth.google')}</Text>

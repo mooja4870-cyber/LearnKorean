@@ -10,6 +10,8 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
+    GoogleAuthProvider,
+    signInWithCredential,
     User as FirebaseUser,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -26,6 +28,7 @@ interface AuthState {
     loginAsGuest: (language: string) => Promise<void>;
     loginWithEmail: (email: string, password: string, language: string) => Promise<void>;
     signUpWithEmail: (email: string, password: string, language: string) => Promise<void>;
+    loginWithGoogle: (idToken: string, language: string) => Promise<void>;
     signOut: () => Promise<void>;
     updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
     refreshUser: () => Promise<void>;
@@ -164,6 +167,35 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             } else {
                 throw new Error(error.message || 'Sign up failed.');
             }
+        }
+    },
+
+    loginWithGoogle: async (idToken: string, language: string) => {
+        set({ isLoading: true });
+        try {
+            const credential = GoogleAuthProvider.credential(idToken);
+            const result = await signInWithCredential(auth, credential);
+            const fbUser = result.user;
+
+            // Check if user exists in Firestore
+            const docRef = doc(db, COLLECTIONS.USERS, fbUser.uid);
+            const docSnap = await getDoc(docRef);
+
+            let profile: UserProfile;
+            if (docSnap.exists()) {
+                profile = docSnap.data() as UserProfile;
+            } else {
+                profile = createNewUserProfile(fbUser.uid, fbUser.email || '', language);
+                profile.displayName = fbUser.displayName || profile.displayName;
+                await setDoc(docRef, profile);
+            }
+
+            await saveLocalUser(profile);
+            await setOnboarded();
+            set({ user: profile, isAuthenticated: true, hasOnboarded: true, isLoading: false });
+        } catch (error: any) {
+            set({ isLoading: false });
+            throw new Error(error.message || 'Google sign-in failed.');
         }
     },
 
