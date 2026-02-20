@@ -17,13 +17,24 @@ export const MyStatsScreen = ({ navigation }: any) => {
     const user = useAuthStore(s => s.user);
     const { totalStudyDays, currentStreak, longestStreak, lessonsCompleted, quizAccuracy, levelProgress } = useUserStore();
 
-    if (!user) return null;
-
     useFocusEffect(
         useCallback(() => {
             useUserStore.getState().loadUserData();
         }, [])
     );
+
+    if (!user) {
+        return (
+            <View style={[styles.container, { backgroundColor: theme.background }]}>
+                <View style={styles.emptyState}>
+                    <Text style={[styles.emptyTitle, { color: theme.text }]}>No profile data</Text>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Text style={[styles.back, { color: theme.primary }]}>← Back</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
 
     return (
         <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -91,6 +102,8 @@ export const MyStatsScreen = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
+    emptyState: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.md },
+    emptyTitle: { fontSize: typography.fontSize.lg, fontWeight: '700' },
     scrollContent: { padding: spacing.xl, paddingTop: 60, paddingBottom: 100 },
     header: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginBottom: spacing.xl },
     back: { fontSize: typography.fontSize.md, fontWeight: '600' },

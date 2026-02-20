@@ -4,6 +4,9 @@
     "slug": "kor-study",
     "version": "1.0.0",
     "orientation": "portrait",
+    "platforms": [
+      "android"
+    ],
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -12,13 +15,6 @@
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#6C5CE7"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.antigravity.korstudy",
-      "infoPlist": {
-        "NSUserNotificationsUsageDescription": "We send daily reminders to help you keep your Korean learning streak!"
-      }
     },
     "android": {
       "package": "com.antigravity.korstudy",
@@ -32,9 +28,6 @@
         "NOTIFICATIONS",
         "SCHEDULE_EXACT_ALARM"
       ]
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     },
     "plugins": [
       [

@@ -43,6 +43,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     initialize: async () => {
         try {
+            // Safety net: if Firebase auth callback is delayed or fails silently,
+            // prevent app from being stuck on loading forever.
+            const loadingTimeout = setTimeout(() => {
+                if (useAuthStore.getState().isLoading) {
+                    set({ isLoading: false });
+                }
+            }, 5000);
+
             const onboarded = await isOnboarded();
             const localUser = await loadLocalUser();
 
@@ -60,36 +68,40 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
 
     _setFirebaseListener: () => {
-        onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
-            try {
-                if (firebaseUser) {
-                    // User is signed in to Firebase. Fetch profile from Firestore.
-                    const docRef = doc(db, COLLECTIONS.USERS, firebaseUser.uid);
-                    const docSnap = await getDoc(docRef);
+        try {
+            onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
+                try {
+                    if (firebaseUser) {
+                        // User is signed in to Firebase. Fetch profile from Firestore.
+                        const docRef = doc(db, COLLECTIONS.USERS, firebaseUser.uid);
+                        const docSnap = await getDoc(docRef);
 
-                    if (docSnap.exists()) {
-                        const profile = docSnap.data() as UserProfile;
-                        await saveLocalUser(profile);
-                        const onboarded = await isOnboarded();
-                        set({ user: profile, isAuthenticated: true, hasOnboarded: onboarded, isLoading: false });
+                        if (docSnap.exists()) {
+                            const profile = docSnap.data() as UserProfile;
+                            await saveLocalUser(profile);
+                            const onboarded = await isOnboarded();
+                            set({ user: profile, isAuthenticated: true, hasOnboarded: onboarded, isLoading: false });
+                        } else {
+                            // Edge case: Auth exists but Firestore doc missing. Handled in signup logic.
+                            set({ isLoading: false });
+                        }
                     } else {
-                        // Edge case: Auth exists but Firestore doc missing. Handled in signup logic.
-                        set({ isLoading: false });
+                        // User is signed out. Check if it's a guest user.
+                        const localUser = await loadLocalUser();
+                        if (localUser?.isGuest) {
+                            const onboarded = await isOnboarded();
+                            set({ user: localUser, isAuthenticated: true, hasOnboarded: onboarded, isLoading: false });
+                        } else {
+                            set({ user: null, isAuthenticated: false, hasOnboarded: false, isLoading: false });
+                        }
                     }
-                } else {
-                    // User is signed out. Check if it's a guest user.
-                    const localUser = await loadLocalUser();
-                    if (localUser?.isGuest) {
-                        const onboarded = await isOnboarded();
-                        set({ user: localUser, isAuthenticated: true, hasOnboarded: onboarded, isLoading: false });
-                    } else {
-                        set({ user: null, isAuthenticated: false, isLoading: false });
-                    }
+                } catch {
+                    set({ isLoading: false });
                 }
-            } catch (err) {
-                set({ isLoading: false });
-            }
-        });
+            });
+        } catch {
+            set({ isLoading: false });
+        }
     },
 
     loginAsGuest: async (language: string) => {

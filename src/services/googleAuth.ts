@@ -15,18 +15,39 @@ const GOOGLE_CLIENT_ID = {
     webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '',
 };
 
+const hasGoogleClientId =
+    !!GOOGLE_CLIENT_ID.expoClientId ||
+    !!GOOGLE_CLIENT_ID.iosClientId ||
+    !!GOOGLE_CLIENT_ID.androidClientId ||
+    !!GOOGLE_CLIENT_ID.webClientId;
+
 /**
  * Hook to use Google Sign-In
  * Returns [request, response, promptAsync]
  */
 export function useGoogleAuth() {
+    const fallbackClientId =
+        GOOGLE_CLIENT_ID.webClientId ||
+        GOOGLE_CLIENT_ID.expoClientId ||
+        GOOGLE_CLIENT_ID.iosClientId ||
+        GOOGLE_CLIENT_ID.androidClientId ||
+        'MISSING_GOOGLE_CLIENT_ID';
+
     const [request, response, promptAsync] = Google.useAuthRequest({
-        clientId: GOOGLE_CLIENT_ID.webClientId,
+        clientId: fallbackClientId,
+        webClientId: GOOGLE_CLIENT_ID.webClientId,
         iosClientId: GOOGLE_CLIENT_ID.iosClientId,
         androidClientId: GOOGLE_CLIENT_ID.androidClientId,
     });
 
-    return { request, response, promptAsync };
+    const safePromptAsync = async () => {
+        if (!hasGoogleClientId) {
+            throw new Error('Google Sign-In is not configured. Set EXPO_PUBLIC_GOOGLE_* client IDs in .env');
+        }
+        return promptAsync();
+    };
+
+    return { request, response, promptAsync: safePromptAsync, isConfigured: hasGoogleClientId };
 }
 
 /**

@@ -27,7 +27,7 @@ export const LoginScreen = ({ navigation, route }: any) => {
     const isLoading = useAuthStore(s => s.isLoading);
 
     // Google auth hook
-    const { response, promptAsync } = useGoogleAuth();
+    const { response, promptAsync, isConfigured } = useGoogleAuth();
 
     // Handle Google auth response
     useEffect(() => {
@@ -142,7 +142,7 @@ export const LoginScreen = ({ navigation, route }: any) => {
                         <TouchableOpacity
                             style={[styles.socialButton, { backgroundColor: '#1A1930', borderColor: '#2D2B4A' }]}
                             onPress={handleGoogleAuth}
-                            disabled={isLoading}
+                            disabled={isLoading || !isConfigured}
                         >
                             <Text style={styles.socialEmoji}>🔵</Text>
                             <Text style={[styles.socialText, { color: '#F1F1F6' }]}>{t('auth.google')}</Text>
